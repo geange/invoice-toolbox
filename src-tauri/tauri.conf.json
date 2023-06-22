@@ -67,7 +67,7 @@
       {
         "fullscreen": false,
         "height": 750,
-        "resizable": true,
+        "resizable": false,
         "title": "invoice-toolbox",
         "width": 1000
       }

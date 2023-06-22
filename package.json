@@ -7,11 +7,11 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.0.10",
-    "@tauri-apps/api": "^1.1.0",
-    "Base64": "^1.1.0",
-    "csv-stringify": "^6.2.0",
-    "element-plus": "^2.2.18",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@tauri-apps/api": "^1.4.0",
+    "Base64": "^1.2.0",
+    "csv-stringify": "^6.4.0",
+    "element-plus": "^2.3.7",
     "vue": "^3.2.38"
   },
   "devDependencies": {
