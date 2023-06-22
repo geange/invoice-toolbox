@@ -60,7 +60,7 @@
 import { ref } from 'vue'
 import { Check, Close } from '@element-plus/icons-vue'
 import { open } from '@tauri-apps/api/dialog'
-import { appDir } from '@tauri-apps/api/path'
+import { appDir, join } from '@tauri-apps/api/path'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { useDark } from '@vueuse/core'
 import { exists, createDir, readDir, readTextFile, renameFile, BaseDirectory, writeTextFile } from '@tauri-apps/api/fs'
@@ -97,7 +97,8 @@ const selectDirectory = async () => {
 
         tableData.value = await readAllFiles()
 
-        await readTextFile(baseDir.value + '/result.json', {}).then(contents => {
+        const path = await join(baseDir.value, "result.json")
+        await readTextFile(path, {}).then(contents => {
             invoiceResult.value = JSON.parse(contents)
 
             for (let i in tableData.value) {
@@ -131,17 +132,11 @@ const settings = ref({
     ak: '',
     sk: '',
 })
-const loadConfig = async () => {
-    await exists('invoice-toolbox', { dir: BaseDirectory.Config }).then(async ok => {
-        if (!ok) {
-            await createDir('invoice-toolbox', { dir: BaseDirectory.Config }).catch(err => {
-                console.log(err)
-                return
-            })
-        }
-    })
 
-    const contents = await readTextFile('invoice-toolbox/app.json', { dir: BaseDirectory.Config })
+const loadConfig = async () => {
+    await createDir('/', { dir: BaseDirectory.App, recursive: true })
+
+    const contents = await readTextFile('app.json', { dir: BaseDirectory.App })
     settings.value = JSON.parse(contents)
     await getToken(settings.value.ak, settings.value.sk).then(resp => {
         token.value = resp.data.access_token
@@ -232,7 +227,8 @@ const getInvoiceResult = (name) => {
 
 const saveResult = async () => {
     const data = JSON.stringify(invoiceResult.value)
-    await writeTextFile(baseDir.value + '/result.json', data, {}).then(_ => {
+    const path = await join(baseDir.value, "result.json")
+    await writeTextFile(path, data, {}).then(_ => {
         centerDialogVisible.value = false
         percentage.value = 0
         pause.value = false
@@ -334,7 +330,8 @@ const handleExport = async () => {
 
     let data = stringify(records)
 
-    await writeTextFile(baseDir.value + '/out.csv', data, {}).then(_ => {
+    const csvPath = join(baseDir.value, "out.csv")
+    await writeTextFile(csvPath, data, {}).then(_ => {
         sendNotification({ title: 'invoice-toolbox', body: '导出文件成功' })
     }).catch(err => {
         console.log(err)

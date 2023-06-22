@@ -29,30 +29,26 @@ const settings = ref({
 })
 
 const loadConfig = async () => {
-    await exists('invoice-toolbox', {dir: BaseDirectory.Config}).then(async ok  =>   {
-        if (!ok) {
-            await createDir('invoice-toolbox', {dir: BaseDirectory.Config}).catch(err => {
-                console.log(err)
-                return
-            })
-        }
-    })
-
-    await readTextFile('invoice-toolbox/app.json', { dir: BaseDirectory.Config }).then(contents => {
+    await createDir('', { dir: BaseDirectory.App, recursive: true })
+    
+    await readTextFile('app.json', { dir: BaseDirectory.App }).then(contents => {
         settings.value = JSON.parse(contents)
     }).catch(err => {
 
         console.log(err)
     })
-    
+
 }
 loadConfig()
 
 const isDark = useDark()
 
 const handleSave = async () => {
+    // 创建目录
+    await createDir('', { dir: BaseDirectory.App, recursive: true })
+
     const content = JSON.stringify(settings.value)
-    await writeTextFile('invoice-toolbox/app.json', content, { dir: BaseDirectory.Config }).then(_ => {
+    await writeTextFile('app.json', content, { dir: BaseDirectory.App }).then(_ => {
 
     }).catch(err => {
         console.log(err)

@@ -13,8 +13,9 @@
     "allowlist": {
       "all": true,
       "fs": {
+        "all": true,
         "scope": [
-          "*"
+          "**"
         ]
       },
       "http": {
@@ -39,7 +40,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "cn.geange",
+      "identifier": "com.github.geange.invoice-toolbox",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
