@@ -330,7 +330,7 @@ const handleExport = async () => {
 
     let data = stringify(records)
 
-    const csvPath = join(baseDir.value, "out.csv")
+    const csvPath = await join(baseDir.value, "out.csv")
     await writeTextFile(csvPath, data, {}).then(_ => {
         sendNotification({ title: 'invoice-toolbox', body: '导出文件成功' })
     }).catch(err => {
