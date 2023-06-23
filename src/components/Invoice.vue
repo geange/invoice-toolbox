@@ -114,6 +114,8 @@ const selectDirectory = async () => {
     })
 }
 
+
+
 const readAllFiles = async () => {
     const files = await readDir(baseDir.value, { recursive: false })
 
@@ -354,9 +356,9 @@ const handleRename = async () => {
         let ext = ""
         if (name.endsWith(".jpg")) {
             ext = ".jpg"
-        }else if (name.endsWith(".jpeg")) {
+        } else if (name.endsWith(".jpeg")) {
             ext = ".jpeg"
-        }else if (name.endsWith(".png")) {
+        } else if (name.endsWith(".png")) {
             ext = ".png"
         }
 
@@ -364,9 +366,9 @@ const handleRename = async () => {
             continue
         }
 
-        let newName =  invoice_num + ext
+        let newName = invoice_num + ext
 
-        nvoiceResult.value[newName] = value
+        invoiceResult.value[newName] = value
 
         const newPath = await join(baseDir.value, newName)
         await renameFile(path, newPath, {})
@@ -374,6 +376,24 @@ const handleRename = async () => {
     }
     await saveResult()
     multipleSelection.value = {}
+    reloadDir()
+}
+
+const reloadDir = async () => {
+    tableData.value = await readAllFiles()
+
+    const path = await join(baseDir.value, "result.json")
+    await readTextFile(path, {}).then(contents => {
+        invoiceResult.value = JSON.parse(contents)
+
+        for (let i in tableData.value) {
+            if (hasInvoiceResult(tableData.value[i].name)) {
+                tableData.value[i].scan = true
+            }
+        }
+    }).catch(err => {
+        console.log(err)
+    })
 }
 
 </script> 
