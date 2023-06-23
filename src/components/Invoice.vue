@@ -29,9 +29,9 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="操作">
-                        <template #default="scope">
+                        <!-- <template #default="scope">
                             <el-button @click="showImageResult(scope.row)">详细</el-button>
-                        </template>
+                        </template> -->
 
                     </el-table-column>
                 </el-table>
@@ -134,7 +134,7 @@ const settings = ref({
 })
 
 const loadConfig = async () => {
-    await createDir('/', { dir: BaseDirectory.App, recursive: true })
+    await createDir('', { dir: BaseDirectory.App, recursive: true })
 
     const contents = await readTextFile('app.json', { dir: BaseDirectory.App })
     settings.value = JSON.parse(contents)
@@ -302,8 +302,6 @@ const handleExport = async () => {
 
         let result = invoiceResult.value[name].words_result
 
-        console.log(result)
-
         let commodityName = ''
         for (let k in result.CommodityName) {
             if (commodityName === '') {
@@ -352,7 +350,6 @@ const handleRename = async () => {
         delete invoiceResult.value[name]
 
         let invoice_num = value.words_result.InvoiceNum
-        invoiceResult.value[invoice_num] = value
 
         let ext = ""
         if (name.endsWith(".jpg")) {
@@ -368,6 +365,9 @@ const handleRename = async () => {
         }
 
         let newName =  invoice_num + ext
+
+        nvoiceResult.value[newName] = value
+
         const newPath = await join(baseDir.value, newName)
         await renameFile(path, newPath, {})
         multipleSelection.value[i].name = newName
