@@ -30,7 +30,7 @@ const settings = ref({
 
 const loadConfig = async () => {
     await createDir('', { dir: BaseDirectory.App, recursive: true })
-    
+
     await readTextFile('app.json', { dir: BaseDirectory.App }).then(contents => {
         settings.value = JSON.parse(contents)
     }).catch(err => {

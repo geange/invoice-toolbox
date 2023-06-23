@@ -354,15 +354,23 @@ const handleRename = async () => {
         let invoice_num = value.words_result.InvoiceNum
         invoiceResult.value[invoice_num] = value
 
-        if (name.endsWith('.jpg')) {
-            let new_name = invoice_num + '.jpg'
-            await renameFile(path, baseDir.value + "/" + new_name, {})
-            multipleSelection.value[i].name = new_name
-        } else if (name.endsWith('.png')) {
-            let new_name = invoice_num + '.png'
-            await renameFile(path, baseDir.value + "/" + new_name, {})
-            multipleSelection.value[i].name = new_name
+        let ext = ""
+        if (name.endsWith(".jpg")) {
+            ext = ".jpg"
+        }else if (name.endsWith(".jpeg")) {
+            ext = ".jpeg"
+        }else if (name.endsWith(".png")) {
+            ext = ".png"
         }
+
+        if (ext == "") {
+            continue
+        }
+
+        let newName =  invoice_num + ext
+        const newPath = await join(baseDir.value, newName)
+        await renameFile(path, newPath, {})
+        multipleSelection.value[i].name = newName
     }
     await saveResult()
     multipleSelection.value = {}

@@ -67,8 +67,8 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 750,
-        "resizable": false,
+        "height": 700,
+        "resizable": true,
         "title": "invoice-toolbox",
         "width": 1000
       }
